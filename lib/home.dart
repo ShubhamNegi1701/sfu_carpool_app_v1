@@ -9,6 +9,6 @@ class MainMapPage extends StatelessWidget{
       body: Flexible(
         flex:2
       )
-    )
+    );
   }
 }
