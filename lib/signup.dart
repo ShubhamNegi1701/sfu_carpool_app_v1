@@ -1,4 +1,4 @@
-//import 'dart:html';
+import 'dart:html';
 
 import 'package:flutter/material.dart';
 
@@ -15,7 +15,6 @@ class SignUpPage extends StatelessWidget{
                         fontSize: 60
                     )),
                 RaisedButton(
-                  color: Colors.red[900],
                     onPressed: (){
 
                     },
