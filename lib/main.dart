@@ -1,4 +1,4 @@
-import 'dart:html';
+
 
 import 'package:flutter/material.dart';
 
@@ -62,7 +62,7 @@ class HomeButtons extends StatelessWidget {
             onPressed: () {
               Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => LoginPage()));
+                  MaterialPageRoute(builder: (context) => LogInPage()));
             },
             child: const Text('   LOG IN   ',
                 style: TextStyle(fontSize: 20, color: Colors.white)),
