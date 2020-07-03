@@ -65,7 +65,7 @@ class SignUpPage extends StatelessWidget{
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Colors.white,
-                          hintText: 'Username',
+                          hintText: 'First Name',
                           contentPadding: const EdgeInsets.all(15),
                           focusedBorder: OutlineInputBorder(
                             borderSide: BorderSide(color: Colors.white),
