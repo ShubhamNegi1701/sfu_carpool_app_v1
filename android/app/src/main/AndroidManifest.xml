@@ -9,6 +9,9 @@
         android:name="io.flutter.app.FlutterApplication"
         android:label="sfucarpoolapp"
         android:icon="@mipmap/ic_launcher">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDMIiuEny9d4SrnacqdU7-0_c8YgdvaVjg" />
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
