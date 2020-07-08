@@ -1,10 +1,9 @@
-
-
 import 'package:flutter/material.dart';
-import 'package:sfucarpoolapp/home.dart';
 
-import 'login.dart';
-import 'signup.dart';
+import 'package:sfucarpoolapp/View/home.dart';
+import 'View/login.dart';
+import 'View/signup.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() => runApp(new CarPoolApp());
 
@@ -14,12 +13,14 @@ class CarPoolApp extends StatelessWidget {
     return MaterialApp(
       title: 'SFU CarPool App',
       home: HomePage(),
-      theme: ThemeData(
-          primaryColor:Colors.red,
-          accentColor: Colors.red[900]
-      ),
+      theme: ThemeData(primaryColor: Colors.red, accentColor: Colors.red[900]),
     );
   }
+}
+
+class MyHomePage extends StatefulWidget {
+  @override
+  HomePageState createState() => HomePageState();
 }
 
 class HomePage extends StatelessWidget {
@@ -41,14 +42,15 @@ class HomeButtons extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: <Widget>[
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: <Widget>[
           Text('SFU',
-            textAlign: TextAlign.left,
-            style: TextStyle(
-                fontSize: 60, fontFamily: 'Roboto', color: Colors.white)),
-          Text('Carpool\n',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                  fontSize: 60, fontFamily: 'Roboto', color: Colors.white)),
+          Text(
+            'Carpool\n',
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 60,
@@ -62,9 +64,8 @@ class HomeButtons extends StatelessWidget {
             height: 40,
             child: RaisedButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => LogInPage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => LogIn()));
               },
               child: const Text('   LOG IN   ',
                   style: TextStyle(fontSize: 20, color: Colors.white)),
@@ -78,9 +79,8 @@ class HomeButtons extends StatelessWidget {
             height: 40,
             child: RaisedButton(
               onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => SignUpPage()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => SignUp()));
               },
               child: const Text('   SIGN UP    ',
                   style: TextStyle(fontSize: 20, color: Colors.white)),
@@ -94,8 +94,7 @@ class HomeButtons extends StatelessWidget {
             height: 40,
             child: RaisedButton(
               onPressed: () {
-                Navigator.push(
-                    context,
+                Navigator.push(context,
                     MaterialPageRoute(builder: (context) => MainMapPage()));
               },
               child: const Text('   MAP PAGE   ',
@@ -111,4 +110,32 @@ class HomeButtons extends StatelessWidget {
   }
 }
 
+class HomePageState extends State<MyHomePage> {
+  bool isLoggedIn = false;
 
+  checkLogIn() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    bool isLogIn = (prefs.get('isLogIn') ?? false);
+
+    setState(() {
+      isLoggedIn = isLogIn;
+    });
+    print('prefs $isLogIn');
+  }
+
+  @override
+  void initState() {
+    checkLogIn();
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    throw UnimplementedError();
+  }
+
+//  @override
+//  Widget build(BuildContext context) {
+//    return !isLoggedIn ? SignUpPage() : MainMapPage();
+//  }
+}
