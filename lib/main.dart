@@ -64,8 +64,8 @@ class HomeButtons extends StatelessWidget {
             height: 40,
             child: RaisedButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => LogIn()));
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => LogIn()));
               },
               child: const Text('   LOG IN   ',
                   style: TextStyle(fontSize: 20, color: Colors.white)),
@@ -79,8 +79,8 @@ class HomeButtons extends StatelessWidget {
             height: 40,
             child: RaisedButton(
               onPressed: () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => SignUp()));
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => SignUp()));
               },
               child: const Text('   SIGN UP    ',
                   style: TextStyle(fontSize: 20, color: Colors.white)),
