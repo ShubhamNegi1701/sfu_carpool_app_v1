@@ -1,9 +1,12 @@
 // ignore: avoid_web_libraries_in_flutter
 
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:sfucarpoolapp/Model/Users.dart';
 import 'package:sfucarpoolapp/Controller/DataBaseHelper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:encrypt/encrypt.dart';
+import 'package:pointycastle/asymmetric/api.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:flutter/material.dart';
 
@@ -185,11 +188,24 @@ class SignUpPage extends State<SignUp> {
     );
   }
 
+  Future<T> parseKeyFromFile<T extends RSAAsymmetricKey>(
+      String filename) async {
+    final file = File(filename);
+    final key = await file.readAsString();
+    final parser = RSAKeyParser();
+    return parser.parse(key) as T;
+  }
+
   void _insert() async {
-    Map<String, dynamic> row = {
+    final publicKey = await parseKeyFromFile<RSAPublicKey>('test/public.pem');
+    final privKey = await parseKeyFromFile<RSAPrivateKey>('test/private.pem');
+    final encrypter = Encrypter(RSA(publicKey: publicKey, privateKey: privKey));
+    final encrypt_password = encrypter.encrypt(passwordText.text);
+
+    final Map<String, dynamic> row = {
       DataBaseHelper.colUsername: usernameText.text,
       DataBaseHelper.colEmail: emailText.text,
-      DataBaseHelper.colPassword: passwordText.text,
+      DataBaseHelper.colPassword: encrypt_password,
       DataBaseHelper.colReputation: 0,
       DataBaseHelper.col_driver_passenger: 1,
     };
