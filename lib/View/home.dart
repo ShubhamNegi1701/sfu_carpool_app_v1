@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
-import 'package:geocoder/geocoder.dart';
 
 const GoogleApiKey = "AIzaSyDMIiuEny9d4SrnacqdU7-0_c8YgdvaVjg";
 const LatLng _vancouver = const LatLng(49.2827, -123.1207);
@@ -22,26 +21,26 @@ class Map extends State<MainMapPage> {
       home: new Scaffold(
         body: new Stack(
             children: <Widget>[
-              GoogleMap(
-                  initialCameraPosition: CameraPosition(
+              new GoogleMap(
+                  initialCameraPosition: new CameraPosition(
                     target: _vancouver,
                     zoom: 10.0,
                   ),
                   markers: markers
               ),
-              Positioned(
+              new Positioned(
                   top: 10,
                   right: 15,
                   left: 15,
                   child: Container(
                       color: Colors.white,
-                      child: RaisedButton(
+                      child: new RaisedButton(
                           onPressed: () async {
                             Prediction p = await PlacesAutocomplete.show(
                                 context: context,
                                 apiKey: GoogleApiKey,
                                 mode: Mode.overlay,
-                                location: Location(49.2827, -123.1207),
+                                location: new Location(49.2827, -123.1207),
                                 radius: 10000);
                             addMarker(p);
                           },
