@@ -2,43 +2,65 @@
 
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:sfucarpoolapp/Controller/auth.dart';
 import 'package:sfucarpoolapp/Model/Users.dart';
 import 'package:sfucarpoolapp/Controller/DataBaseHelper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:pointycastle/asymmetric/api.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:flutter/material.dart';
+
 
 class SignUp extends StatefulWidget {
+
+  final Function toggleView;
+  SignUp({this.toggleView}); //constructor call
+
   @override
   State<StatefulWidget> createState() => SignUpPage();
 }
 
 class SignUpPage extends State<SignUp> {
-  DataBaseHelper dataBaseHelper = DataBaseHelper();
-  List<Users> usersList;
 
-  final emailText = TextEditingController();
-  final passwordText = TextEditingController();
-  final usernameText = TextEditingController();
-  final passwordConfirm = TextEditingController();
+  final AuthService _auth = AuthService();
+  String email = '';
+  String firstName = '';
+  String password = '';
+  String confirmPassword = '';
+  String error = '';
 
-  Map<String, dynamic> userDataMap = Map<String, dynamic>();
+  //DataBaseHelper dataBaseHelper = DataBaseHelper();
+ // List<Users> usersList;
 
-  setIsLogin() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    await prefs.setBool('isLoggedIn', true);
-  }
+  //final emailText = TextEditingController();
+ // final passwordText = TextEditingController();
+ // final usernameText = TextEditingController();
+ // final passwordConfirm = TextEditingController();
 
-  final dbHelper = DataBaseHelper.instance;
+  //Map<String, dynamic> userDataMap = Map<String, dynamic>();
+
+  //setIsLogin() async {
+  //  SharedPreferences prefs = await SharedPreferences.getInstance();
+   // await prefs.setBool('isLoggedIn', true);
+  //}
+
+ // final dbHelper = DataBaseHelper.instance;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // title: Text('Login'),
+        // title: Text('Sign up for '),
         elevation: 0,
+        actions: <Widget>[
+          FlatButton.icon(
+              icon: Icon(Icons.person),
+              label: Text('Log In'),
+              onPressed: () {
+                widget.toggleView();
+              }
+          )
+        ],
       ),
       backgroundColor: Theme.of(context).primaryColor,
       body: LayoutBuilder(
@@ -73,7 +95,12 @@ class SignUpPage extends State<SignUp> {
                         color: Colors.white,
                       )),
                   TextField(
-                    controller: emailText,
+                   // controller: emailText,
+                    onChanged: (val){
+                      setState(() {
+                        email = val;
+                      });
+                    },
                     style: TextStyle(fontSize: 18, color: Colors.black54),
                     decoration: InputDecoration(
                       filled: true,
@@ -94,7 +121,12 @@ class SignUpPage extends State<SignUp> {
                     height: 20,
                   ),
                   TextField(
-                    controller: usernameText,
+                //    controller: usernameText,
+                    onChanged: (val){
+                      setState(() {
+                        firstName = val;
+                      });
+                    },
                     style: TextStyle(fontSize: 18, color: Colors.black54),
                     decoration: InputDecoration(
                       filled: true,
@@ -115,7 +147,12 @@ class SignUpPage extends State<SignUp> {
                     height: 20,
                   ),
                   TextField(
-                    controller: passwordText,
+                   // controller: passwordText,
+                    onChanged: (val){
+                      setState(() {
+                        password = val;
+                      });
+                    },
                     obscureText: true,
                     style: TextStyle(fontSize: 18, color: Colors.black54),
                     decoration: InputDecoration(
@@ -137,7 +174,12 @@ class SignUpPage extends State<SignUp> {
                     height: 20,
                   ),
                   TextField(
-                    controller: passwordConfirm,
+                //    controller: passwordConfirm,
+                    onChanged: (val){
+                      setState(() {
+                        confirmPassword = val;
+                      });
+                    },
                     obscureText: true,
                     style: TextStyle(fontSize: 18, color: Colors.black54),
                     decoration: InputDecoration(
@@ -171,13 +213,24 @@ class SignUpPage extends State<SignUp> {
                     ),
                     padding: const EdgeInsets.all(15),
                     textColor: Colors.white,
-                    onPressed: () {
-                      _insert();
-                      setIsLogin();
-                      setState(() {
-                        debugPrint("Sign Up Submit");
-                      });
+                    onPressed: () async{
+                      //_insert();
+                      //setIsLogin();
+                      print(email);
+                      print(password);
+                      dynamic result = await _auth.registerWithEmailAndPassword(email, password);
+                      if(result == null){
+                          setState(() {
+                            error = 'please supply valid input';
+                          });
+                      }
                     },
+                  ),
+                  //display error
+                  SizedBox(height: 12),
+                  Text(
+                    error,
+                    style: TextStyle(color: Colors.blue, fontSize: 14),
                   ),
                 ],
               ),
@@ -188,28 +241,28 @@ class SignUpPage extends State<SignUp> {
     );
   }
 
-  Future<T> parseKeyFromFile<T extends RSAAsymmetricKey>(
-      String filename) async {
-    final file = File(filename);
-    final key = await file.readAsString();
-    final parser = RSAKeyParser();
-    return parser.parse(key) as T;
-  }
+  //Future<T> parseKeyFromFile<T extends RSAAsymmetricKey>(
+  //    String filename) async {
+  //  final file = File(filename);
+   // final key = await file.readAsString();
+ //   final parser = RSAKeyParser();
+   // return parser.parse(key) as T;
+ // }
 
-  void _insert() async {
-    final publicKey = await parseKeyFromFile<RSAPublicKey>('test/public.pem');
-    final privKey = await parseKeyFromFile<RSAPrivateKey>('test/private.pem');
-    final encrypter = Encrypter(RSA(publicKey: publicKey, privateKey: privKey));
-    final encrypt_password = encrypter.encrypt(passwordText.text);
+  //void _insert() async {
+  //  final publicKey = await parseKeyFromFile<RSAPublicKey>('test/public.pem');
+  //  final privKey = await parseKeyFromFile<RSAPrivateKey>('test/private.pem');
+  //  final encrypter = Encrypter(RSA(publicKey: publicKey, privateKey: privKey));
+   // final encrypt_password = encrypter.encrypt(passwordText.text);
 
-    final Map<String, dynamic> row = {
-      DataBaseHelper.colUsername: usernameText.text,
-      DataBaseHelper.colEmail: emailText.text,
-      DataBaseHelper.colPassword: encrypt_password,
-      DataBaseHelper.colReputation: 0,
-      DataBaseHelper.col_driver_passenger: 1,
-    };
-    final id = dbHelper.insertUser(row);
-    print('Inserted row id: $id');
-  }
+  //  final Map<String, dynamic> row = {
+  //    DataBaseHelper.colUsername: usernameText.text,
+  //    DataBaseHelper.colEmail: emailText.text,
+  //    DataBaseHelper.colPassword: encrypt_password,
+  //    DataBaseHelper.colReputation: 0,
+   //   DataBaseHelper.col_driver_passenger: 1,
+   // };
+   // final id = dbHelper.insertUser(row);
+  //  print('Inserted row id: $id');
+  //}
 }

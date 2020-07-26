@@ -1,19 +1,26 @@
 import 'package:flutter/material.dart';
-
+import 'package:provider/provider.dart';
+import 'package:sfucarpoolapp/Controller/auth.dart';
 import 'package:sfucarpoolapp/View/home.dart';
+import 'package:sfucarpoolapp/View/user.dart';
+import 'package:sfucarpoolapp/View/wrapper.dart';
 import 'View/login.dart';
 import 'View/signup.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 
 void main() => runApp(new CarPoolApp());
 
 class CarPoolApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'SFU CarPool App',
-      home: HomePage(),
-      theme: ThemeData(primaryColor: Colors.red, accentColor: Colors.red[900]),
+    return StreamProvider<User>.value(
+      value: AuthService().user,
+      child: MaterialApp(
+        title: 'SFU CarPool App',
+        home: Wrapper(),
+        theme: ThemeData(primaryColor: Colors.red, accentColor: Colors.red[900]),
+      ),
     );
   }
 }

@@ -1,27 +1,40 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
+
+import 'package:sfucarpoolapp/Controller/auth.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sfucarpoolapp/Model/Users.dart';
 import 'package:sfucarpoolapp/Controller/DataBaseHelper.dart';
 
 class LogIn extends StatefulWidget {
+
+  final Function toggleView;
+  LogIn({this.toggleView}); //constructor call
+
+
   @override
   State<StatefulWidget> createState() => LogInPage();
 }
 
 class LogInPage extends State<LogIn> {
-  DataBaseHelper dataBaseHelper = DataBaseHelper();
-  List<Users> usersList;
+ // DataBaseHelper dataBaseHelper = DataBaseHelper();
+ // List<Users> usersList;
+  final AuthService _auth = AuthService();
+  final _formKey = GlobalKey<FormState>();
 
-  final usernameText = TextEditingController();
-  final passwordText = TextEditingController();
+ // final usernameText = TextEditingController();
+ // final passwordText = TextEditingController();
 
-  @override
-  void dispose() {
-    usernameText.dispose();
-    passwordText.dispose();
-    super.dispose();
-  }
+
+  // text field state
+  String email = '';
+  String password = '';
+  String error = '';
+ // @override
+  //void dispose() {
+  //  usernameText.dispose();
+  //  passwordText.dispose();
+  //  super.dispose();
+ // }
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +42,15 @@ class LogInPage extends State<LogIn> {
       appBar: AppBar(
         // title: Text('Login'),
         elevation: 0,
+        actions: <Widget>[
+          FlatButton.icon(
+            icon: Icon(Icons.person),
+            label: Text('Register'),
+            onPressed: () {
+              widget.toggleView();
+            }
+          )
+        ],
       ),
       backgroundColor: Theme.of(context).primaryColor,
       body: LayoutBuilder(
@@ -66,12 +88,19 @@ class LogInPage extends State<LogIn> {
                     height: 20,
                   ),
                   TextField(
-                    controller: usernameText,
+                   // validator: (val) => val.isEmpty ? 'Enter an email' : null,
+                    onChanged: (val){
+                      setState(() {
+                        email = val;
+                      });
+                    },
+                   // key: _formKey,
+                  //  controller: usernameText,
                     style: TextStyle(fontSize: 18, color: Colors.black54),
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Colors.white,
-                      hintText: 'Username',
+                      hintText: 'Email',
                       contentPadding: const EdgeInsets.all(15),
                       focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
@@ -87,7 +116,13 @@ class LogInPage extends State<LogIn> {
                     height: 20,
                   ),
                   TextField(
-                    controller: passwordText,
+                    onChanged: (val){
+                      setState(() {
+                        password = val;
+                      });
+                    },
+                   // key: _formKey,
+                //    controller: passwordText,
                     obscureText: true,
                     style: TextStyle(fontSize: 18, color: Colors.black54),
                     decoration: InputDecoration(
@@ -121,11 +156,25 @@ class LogInPage extends State<LogIn> {
                     ),
                     padding: const EdgeInsets.all(15),
                     textColor: Colors.white,
-                    onPressed: () {
-                      setState(() {
-                        debugPrint("Try to log in...");
+                    onPressed: () async
+                    {
+                      // if(_formKey.currentState.validate()){
+
+                      //_insert();
+                      //setIsLogin();
+                      dynamic result = await _auth.logInWithEmailAndPassword(email, password);
+
+                       if(result == null){
+                       setState(() {
+                       error = 'could not log in with those credentials';
                       });
-                    },
+                      }
+                    }
+                  ),
+                  SizedBox(height: 12),
+                  Text(
+                    error,
+                    style: TextStyle(color: Colors.blue, fontSize: 14),
                   ),
                 ],
               ),
