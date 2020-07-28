@@ -3,6 +3,7 @@ import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:http/http.dart' as http;
+import 'package:sfucarpoolapp/Controller/auth.dart';
 import 'dart:convert';
 
 const GoogleApiKey = "AIzaSyDMIiuEny9d4SrnacqdU7-0_c8YgdvaVjg";
@@ -19,6 +20,7 @@ class MainMapPage extends StatefulWidget {
 }
 
 class Map extends State<MainMapPage> {
+  final AuthService _auth = AuthService();
   var startController = new TextEditingController();
   List<String> _campuses = ['SFU Burnaby', 'SFU Surrey', 'SFU Vancouver'];
 
@@ -31,6 +33,20 @@ class Map extends State<MainMapPage> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: new Scaffold(
+        appBar: AppBar(
+          title: Text('Welcome'),
+          backgroundColor: Colors.red,
+          elevation: 0.0,
+          actions: <Widget>[
+            FlatButton.icon(
+              icon: Icon(Icons.person),
+              label: Text('logout'),
+              onPressed: () async{
+                await _auth.signOut();
+              },
+            )
+          ],
+        ),
         body: new Stack(
           children: <Widget>[
             new GoogleMap(
