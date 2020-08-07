@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:encrypt/encrypt.dart';
 import 'package:pointycastle/asymmetric/api.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:firebase_database/firebase_database.dart';
 
 
 class SignUp extends StatefulWidget {
