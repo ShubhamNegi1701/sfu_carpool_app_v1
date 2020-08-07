@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -5,6 +7,9 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:http/http.dart' as http;
 import 'package:sfucarpoolapp/Controller/auth.dart';
 import 'dart:convert';
+import 'package:firebase_database/firebase_database.dart';
+
+import 'package:sfucarpoolapp/View/user.dart';
 
 const GoogleApiKey = "AIzaSyDMIiuEny9d4SrnacqdU7-0_c8YgdvaVjg";
 const LatLng _vancouver = const LatLng(49.2827, -123.1207);
@@ -19,6 +24,8 @@ class MainMapPage extends StatefulWidget {
   Map createState() => Map();
 }
 
+
+
 class Map extends State<MainMapPage> {
   final AuthService _auth = AuthService();
   var startController = new TextEditingController();
@@ -30,6 +37,38 @@ class Map extends State<MainMapPage> {
   LatLng _start;
   bool _startInitialized = false;
 
+//  FirebaseUser CurrentUser;
+//  String _fname = '';
+//  FirebaseAuth _auth;
+//  DocumentReference ref;
+//  @override
+//  void initState(){
+//    super.initState
+//    _auth = FirebaseAuth.instance;
+//    _getCurrentUser();
+//  }
+//  _getCurrentUser () async {
+//    CurrentUser = await _auth.currentUser();
+//    DocumentSnapshot item = await Firestore.instance.collection("users").document(CurrentUser.uid).get(); //If //I delete this line everything works fine but I don't have user name.
+//    _fname = item['firstName'];
+//    setState(() {
+//    });
+//  }
+
+  final FirebaseAuth _authDB = FirebaseAuth.instance;
+  FirebaseUser user;
+
+  @override
+  void initState() {
+    super.initState();
+    initUser();
+  }
+
+  initUser() async {
+    user = await _authDB.currentUser();
+    setState(() {});
+  }
+
   Widget build(BuildContext context) {
     return MaterialApp(
       home: new Scaffold(
@@ -37,15 +76,78 @@ class Map extends State<MainMapPage> {
           title: Text('Welcome'),
           backgroundColor: Colors.red,
           elevation: 0.0,
-          actions: <Widget>[
-            FlatButton.icon(
-              icon: Icon(Icons.person),
-              label: Text('logout'),
-              onPressed: () async{
-                await _auth.signOut();
-              },
-            )
-          ],
+//          actions: <Widget>[
+//            FlatButton.icon(
+//              icon: Icon(Icons.person),
+//              label: Text('logout'),
+//              onPressed: () async{
+//                await _auth.signOut();
+//              },
+//            )
+//          ],
+        ),
+        drawer: Drawer(
+          // Add a ListView to the drawer. This ensures the user can scroll
+          // through the options in the drawer if there isn't enough vertical
+          // space to fit everything.
+          child: ListView(
+            // Important: Remove any padding from the ListView.
+            padding: EdgeInsets.zero,
+            children: <Widget>[
+              DrawerHeader(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: <Widget>[
+                    Text("Welcome, ${user?.email}",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w500
+                      ),),
+                  ]
+                  ),
+                decoration: BoxDecoration(
+                  color: Colors.red,
+                ),
+              ),
+              ListTile(
+                title: Text('Trip History'),
+                onTap: () {
+                  // Update the state of the app.
+                  // ...
+                },
+              ),
+              ListTile(
+                title: Text('Settings'),
+                onTap: () {
+                  // Update the state of the app.
+                  // ...
+                },
+              ),
+              ListTile(
+                title: Text('Contact Us'),
+                onTap: () {
+                  // Update the state of the app.
+                  // ...
+                },
+              ),
+              ListTile(
+                title: Text('Help'),
+                onTap: () {
+                  // Update the state of the app.
+                  // ...
+                },
+              ),
+              ListTile(
+                title: Text('Log Out'),
+                onTap: () async {
+                  await _auth.signOut();
+                }
+              ),
+            ],
+          ),
         ),
         body: new Stack(
           children: <Widget>[
@@ -115,6 +217,7 @@ class Map extends State<MainMapPage> {
                       }).toList(),
                     ),
                     new RaisedButton(
+                      child: Text("Go!"),
                         onPressed: () async {
                           String route = await getRoute(_start, _destination);
                           drawRoute(route);
@@ -224,4 +327,5 @@ class Map extends State<MainMapPage> {
     return result;
   }
 }
+
 
