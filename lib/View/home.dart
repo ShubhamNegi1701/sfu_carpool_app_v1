@@ -24,8 +24,6 @@ class MainMapPage extends StatefulWidget {
   Map createState() => Map();
 }
 
-
-
 class Map extends State<MainMapPage> {
   final AuthService _auth = AuthService();
   var startController = new TextEditingController();
@@ -143,6 +141,10 @@ class Map extends State<MainMapPage> {
               ListTile(
                 title: Text('Log Out'),
                 onTap: () async {
+                  setState(() {
+                    markers = {};
+                    polyLines = {};
+                  });
                   await _auth.signOut();
                 }
               ),
@@ -181,6 +183,7 @@ class Map extends State<MainMapPage> {
                           hintText: 'Select your starting point'
                       ),
                       controller: startController,
+                      textAlign: TextAlign.center,
                     ),
                     new DropdownButton(
                       hint: Text('Select your destination'),
@@ -218,10 +221,12 @@ class Map extends State<MainMapPage> {
                     ),
                     new RaisedButton(
                       child: Text("Go!"),
-                        onPressed: () async {
+                      onPressed: () async {
+                        if(_startInitialized && _destinationInitialized) {
                           String route = await getRoute(_start, _destination);
                           drawRoute(route);
                         }
+                      }
                     )
                   ],
                 ),
