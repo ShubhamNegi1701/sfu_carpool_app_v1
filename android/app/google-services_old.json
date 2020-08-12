@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "22895085418",
+    "firebase_url": "https://sfu-carpool.firebaseio.com",
+    "project_id": "sfu-carpool",
+    "storage_bucket": "sfu-carpool.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:22895085418:android:9d1ef9bf647e1fea760713",
+        "android_client_info": {
+          "package_name": "com.example.sfucarpoolapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "22895085418-6m5934gk3a3vf2gme0dcdof2hu79f3ce.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCRQxbUnFVfwOU1A2o5ys6c1WnDlB_ZquQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "22895085418-6m5934gk3a3vf2gme0dcdof2hu79f3ce.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
