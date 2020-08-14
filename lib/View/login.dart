@@ -1,40 +1,23 @@
 import 'package:flutter/material.dart';
 
 import 'package:sfucarpoolapp/Controller/auth.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:sfucarpoolapp/Model/Users.dart';
-import 'package:sfucarpoolapp/Controller/DataBaseHelper.dart';
 
 class LogIn extends StatefulWidget {
 
   final Function toggleView;
   LogIn({this.toggleView}); //constructor call
-
-
   @override
   State<StatefulWidget> createState() => LogInPage();
 }
 
 class LogInPage extends State<LogIn> {
- // DataBaseHelper dataBaseHelper = DataBaseHelper();
- // List<Users> usersList;
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
-
- // final usernameText = TextEditingController();
- // final passwordText = TextEditingController();
-
 
   // text field state
   String email = '';
   String password = '';
   String error = '';
- // @override
-  //void dispose() {
-  //  usernameText.dispose();
-  //  passwordText.dispose();
-  //  super.dispose();
- // }
 
   @override
   Widget build(BuildContext context) {

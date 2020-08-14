@@ -1,16 +1,7 @@
 // ignore: avoid_web_libraries_in_flutter
 
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:sfucarpoolapp/Controller/auth.dart';
-import 'package:sfucarpoolapp/Model/Users.dart';
-import 'package:sfucarpoolapp/Controller/DataBaseHelper.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:encrypt/encrypt.dart';
-import 'package:pointycastle/asymmetric/api.dart';
-import 'package:sqflite/sqflite.dart';
-import 'package:firebase_database/firebase_database.dart';
-
 
 class SignUp extends StatefulWidget {
 
@@ -29,23 +20,6 @@ class SignUpPage extends State<SignUp> {
   String password = '';
   String confirmPassword = '';
   String error = '';
-
-  //DataBaseHelper dataBaseHelper = DataBaseHelper();
- // List<Users> usersList;
-
-  //final emailText = TextEditingController();
- // final passwordText = TextEditingController();
- // final usernameText = TextEditingController();
- // final passwordConfirm = TextEditingController();
-
-  //Map<String, dynamic> userDataMap = Map<String, dynamic>();
-
-  //setIsLogin() async {
-  //  SharedPreferences prefs = await SharedPreferences.getInstance();
-   // await prefs.setBool('isLoggedIn', true);
-  //}
-
- // final dbHelper = DataBaseHelper.instance;
 
   @override
   Widget build(BuildContext context) {
@@ -241,29 +215,4 @@ class SignUpPage extends State<SignUp> {
       ),
     );
   }
-
-  //Future<T> parseKeyFromFile<T extends RSAAsymmetricKey>(
-  //    String filename) async {
-  //  final file = File(filename);
-   // final key = await file.readAsString();
- //   final parser = RSAKeyParser();
-   // return parser.parse(key) as T;
- // }
-
-  //void _insert() async {
-  //  final publicKey = await parseKeyFromFile<RSAPublicKey>('test/public.pem');
-  //  final privKey = await parseKeyFromFile<RSAPrivateKey>('test/private.pem');
-  //  final encrypter = Encrypter(RSA(publicKey: publicKey, privateKey: privKey));
-   // final encrypt_password = encrypter.encrypt(passwordText.text);
-
-  //  final Map<String, dynamic> row = {
-  //    DataBaseHelper.colUsername: usernameText.text,
-  //    DataBaseHelper.colEmail: emailText.text,
-  //    DataBaseHelper.colPassword: encrypt_password,
-  //    DataBaseHelper.colReputation: 0,
-   //   DataBaseHelper.col_driver_passenger: 1,
-   // };
-   // final id = dbHelper.insertUser(row);
-  //  print('Inserted row id: $id');
-  //}
 }

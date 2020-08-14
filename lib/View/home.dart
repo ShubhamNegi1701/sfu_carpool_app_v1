@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -6,10 +8,8 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_maps_webservice/places.dart';
 import 'package:http/http.dart' as http;
 import 'package:sfucarpoolapp/Controller/auth.dart';
-import 'dart:convert';
 import 'package:firebase_database/firebase_database.dart';
 
-import 'package:sfucarpoolapp/View/user.dart';
 
 const GoogleApiKey = "AIzaSyDMIiuEny9d4SrnacqdU7-0_c8YgdvaVjg";
 const LatLng _vancouver = const LatLng(49.2827, -123.1207);

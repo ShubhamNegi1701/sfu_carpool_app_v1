@@ -2,12 +2,10 @@ import "package:flutter/material.dart";
 import 'package:provider/provider.dart';
 import 'package:sfucarpoolapp/Controller/auth.dart';
 import 'package:sfucarpoolapp/View/home.dart';
-import 'package:sfucarpoolapp/View/user.dart';
-import 'package:sfucarpoolapp/View/wrapper.dart';
+import 'package:sfucarpoolapp/Model/user.dart';
+import 'package:sfucarpoolapp/Controller/wrapper.dart';
 import 'View/login.dart';
 import 'View/signup.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-
 
 void main() => runApp(new CarPoolApp());
 
@@ -25,10 +23,6 @@ class CarPoolApp extends StatelessWidget {
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  @override
-  HomePageState createState() => HomePageState();
-}
 
 class HomePage extends StatelessWidget {
   @override
@@ -117,32 +111,3 @@ class HomeButtons extends StatelessWidget {
   }
 }
 
-class HomePageState extends State<MyHomePage> {
-  bool isLoggedIn = false;
-
-  checkLogIn() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    bool isLogIn = (prefs.get('isLogIn') ?? false);
-
-    setState(() {
-      isLoggedIn = isLogIn;
-    });
-    print('prefs $isLogIn');
-  }
-
-  @override
-  void initState() {
-    checkLogIn();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    throw UnimplementedError();
-  }
-
-//  @override
-//  Widget build(BuildContext context) {
-//    return !isLoggedIn ? SignUpPage() : MainMapPage();
-//  }
-}

@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:sfucarpoolapp/View/user.dart';
+import 'package:sfucarpoolapp/Model/user.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -32,7 +32,8 @@ class AuthService {
     try{
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email.trim(), password: password.trim());
       FirebaseUser user = result.user;
-      return _userFromFirebaseUser(user);
+      if (user.isEmailVerified) return _userFromFirebaseUser(user);
+      return null;
     } catch(e){
       print(e.toString());
       return null;
@@ -44,8 +45,10 @@ class AuthService {
     try{
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email.trim(), password: password.trim());
       FirebaseUser user = result.user;
+      await user.sendEmailVerification();
       return _userFromFirebaseUser(user);
     } catch(e){
+        print("An error occurred while trying to send email verification");
         print(e.toString());
         return null;
     }
@@ -60,4 +63,5 @@ class AuthService {
       return null;
     }
    }
+
 }

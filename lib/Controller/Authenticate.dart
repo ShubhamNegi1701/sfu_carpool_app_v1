@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sfucarpoolapp/View/login.dart';
 import 'package:sfucarpoolapp/View/signup.dart';
+
 class Authenticate extends StatefulWidget {
   @override
   _AuthenticateState createState() => _AuthenticateState();
@@ -14,6 +15,7 @@ class _AuthenticateState extends State<Authenticate> {
       showLogIn = !showLogIn;
     });
   }
+
   @override
   Widget build(BuildContext context) {
     if(showLogIn){
