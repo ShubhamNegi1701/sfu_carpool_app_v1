@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-
 import 'package:sfucarpoolapp/Controller/auth.dart';
 
 class LogIn extends StatefulWidget {
-
   final Function toggleView;
   LogIn({this.toggleView}); //constructor call
   @override
@@ -12,7 +10,6 @@ class LogIn extends StatefulWidget {
 
 class LogInPage extends State<LogIn> {
   final AuthService _auth = AuthService();
-  final _formKey = GlobalKey<FormState>();
 
   // text field state
   String email = '';
@@ -139,20 +136,51 @@ class LogInPage extends State<LogIn> {
                     ),
                     padding: const EdgeInsets.all(15),
                     textColor: Colors.white,
-                    onPressed: () async
-                    {
-                      // if(_formKey.currentState.validate()){
-
-                      //_insert();
-                      //setIsLogin();
+                    onPressed: () async {
                       dynamic result = await _auth.logInWithEmailAndPassword(email, password);
-
-                       if(result == null){
-                       setState(() {
-                       error = 'could not log in with those credentials';
-                      });
+                       if(result == null) {
+                         setState(() {
+                           error = 'could not log in with those credentials';
+                         });
+                       }
+                       else if(result == false){
+                         // TODO: same as sign up one. -C
+                         return showDialog<void>(
+                             context: context,
+                             barrierDismissible: false,
+                             builder: (BuildContext context) {
+                               return AlertDialog(
+                                   title: Text("Reminder"),
+                                   content: SingleChildScrollView(
+                                     child: ListBody(
+                                       children: <Widget>[
+                                         Text(
+                                             'Please Check your Email Inbox to Activate your Account.'),
+                                       ],
+                                     ),
+                                   ),
+                                   actions: <Widget>[
+                                     FlatButton(
+                                       child: Text('OK'),
+                                       onPressed: () {
+                                         Navigator.of(context).pop();
+                                       },
+                                     )
+                                   ]
+                               );
+                             }
+                         );
                       }
                     }
+                  ),
+                  FlatButton(
+                    child: Text(
+                      'Forgot password?',
+                      style: TextStyle(color: Colors.black54),
+                    ),
+                    onPressed: (){
+                      //Navigator.pushNamed(context, '/forgot-password');
+                    },
                   ),
                   SizedBox(height: 12),
                   Text(

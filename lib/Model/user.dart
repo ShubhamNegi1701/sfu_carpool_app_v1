@@ -1,15 +1,21 @@
 class User {
   final String uid;
-  User({this.uid});
+  final String firstname;
+  final String email;
+  final String password;
+  final int reputation;
+  final int driver_passenger; // driver : 0, passenger: 1
+
+  User(
+      {this.uid,
+        this.firstname,
+        this.email,
+        this.password,
+        this.reputation,
+        this.driver_passenger});
 }
 
-//class Users {
-//  final int id;
-//  final String username;
-//  final String email;
-//  final String password;
-//  final int reputation;
-//  final int driver_passenger; // driver : 0, passenger: 1
+
 //
 //  Users(
 //      {this.id,

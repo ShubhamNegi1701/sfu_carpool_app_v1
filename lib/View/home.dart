@@ -9,6 +9,7 @@ import 'package:google_maps_webservice/places.dart';
 import 'package:http/http.dart' as http;
 import 'package:sfucarpoolapp/Controller/auth.dart';
 import 'package:firebase_database/firebase_database.dart';
+import 'package:sfucarpoolapp/View//orderHist.dart';
 
 
 const GoogleApiKey = "AIzaSyDMIiuEny9d4SrnacqdU7-0_c8YgdvaVjg";
@@ -34,6 +35,8 @@ class Map extends State<MainMapPage> {
   bool _destinationInitialized = false;
   LatLng _start;
   bool _startInitialized = false;
+
+  final _firestore = Firestore.instance;
 
 //  FirebaseUser CurrentUser;
 //  String _fname = '';
@@ -114,7 +117,8 @@ class Map extends State<MainMapPage> {
                 title: Text('Trip History'),
                 onTap: () {
                   // Update the state of the app.
-                  // ...
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => HistoryScreen()));
                 },
               ),
               ListTile(
@@ -226,6 +230,14 @@ class Map extends State<MainMapPage> {
                           String route = await getRoute(_start, _destination);
                           drawRoute(route);
                         }
+                        _firestore.collection('history').add({
+                          'uid': user.uid,
+                          'order_id': 002,
+                          'driver_id': 056,
+                          'destination': _destinationId,
+                          'startAdd': startController.text,
+                          'date': DateTime.now()
+                        });
                       }
                     )
                   ],

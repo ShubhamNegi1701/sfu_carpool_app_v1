@@ -32,8 +32,14 @@ class AuthService {
     try{
       AuthResult result = await _auth.signInWithEmailAndPassword(email: email.trim(), password: password.trim());
       FirebaseUser user = result.user;
-      if (user.isEmailVerified) return _userFromFirebaseUser(user);
-      return null;
+      if (user.isEmailVerified) {
+        print("Email Verified");
+        return _userFromFirebaseUser(user);
+      }
+      else{
+        print("Please verify your email.");
+        return false;
+      }
     } catch(e){
       print(e.toString());
       return null;
@@ -45,7 +51,7 @@ class AuthService {
     try{
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email.trim(), password: password.trim());
       FirebaseUser user = result.user;
-      await user.sendEmailVerification();
+      if (user != null) await user.sendEmailVerification().then((value) => null);
       return _userFromFirebaseUser(user);
     } catch(e){
         print("An error occurred while trying to send email verification");

@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:sfucarpoolapp/Controller/auth.dart';
+import 'package:sfucarpoolapp/Controller/validator.dart';
+import 'login.dart';
 
 class SignUp extends StatefulWidget {
 
@@ -69,8 +71,10 @@ class SignUpPage extends State<SignUp> {
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
                       )),
-                  TextField(
+                  TextFormField(
                    // controller: emailText,
+                    validator: Validator.validateEmail,
+                    keyboardType: TextInputType.emailAddress,
                     onChanged: (val){
                       setState(() {
                         email = val;
@@ -95,8 +99,8 @@ class SignUpPage extends State<SignUp> {
                   SizedBox(
                     height: 20,
                   ),
-                  TextField(
-                //    controller: usernameText,
+                  TextFormField(
+                    validator: Validator.validateName,
                     onChanged: (val){
                       setState(() {
                         firstName = val;
@@ -121,7 +125,8 @@ class SignUpPage extends State<SignUp> {
                   SizedBox(
                     height: 20,
                   ),
-                  TextField(
+                  TextFormField(
+                    validator: Validator.validatePassword,
                    // controller: passwordText,
                     onChanged: (val){
                       setState(() {
@@ -189,8 +194,6 @@ class SignUpPage extends State<SignUp> {
                     padding: const EdgeInsets.all(15),
                     textColor: Colors.white,
                     onPressed: () async{
-                      //_insert();
-                      //setIsLogin();
                       print(email);
                       print(password);
                       dynamic result = await _auth.registerWithEmailAndPassword(email, password);
@@ -199,10 +202,37 @@ class SignUpPage extends State<SignUp> {
                             error = 'please supply valid input';
                           });
                       }
+                      else{ // alert dialogue
+                          return showDialog<void>(
+                            context: context,
+                            barrierDismissible: false,
+                            builder: (BuildContext context) {
+                              return AlertDialog(
+                                  title: Text("Reminder"),
+                                  content: SingleChildScrollView(
+                                    child: ListBody(
+                                      children: <Widget>[
+                                        Text(
+                                            'Please Check your Email Inbox to Activate your Account.'),
+                                      ],
+                                    ),
+                                  ),
+                                  actions: <Widget>[
+                                    FlatButton(
+                                      child: Text('OK'),
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    )
+                                  ]
+                              );
+                            }
+                        );
+                      }
                     },
                   ),
-                  //display error
-                  SizedBox(height: 12),
+
+                  SizedBox(height: 8),
                   Text(
                     error,
                     style: TextStyle(color: Colors.blue, fontSize: 14),
