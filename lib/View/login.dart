@@ -1,9 +1,13 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sfucarpoolapp/Controller/auth.dart';
+import 'package:sfucarpoolapp/View/forgetPwd.dart';
+
 
 class LogIn extends StatefulWidget {
   final Function toggleView;
   LogIn({this.toggleView}); //constructor call
+
   @override
   State<StatefulWidget> createState() => LogInPage();
 }
@@ -179,7 +183,8 @@ class LogInPage extends State<LogIn> {
                       style: TextStyle(color: Colors.black54),
                     ),
                     onPressed: (){
-                      //Navigator.pushNamed(context, '/forgot-password');
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (context) => ForgetPwd()));
                     },
                   ),
                   SizedBox(height: 12),

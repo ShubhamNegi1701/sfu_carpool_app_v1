@@ -43,14 +43,15 @@ class _HistoryScreenState extends State<HistoryScreen>{
     await for(var snapshot in _firestore.collection('history').snapshots()) {
       for (var order in snapshot.documents) {
         if (order.data['uid'] == loggedInId) {
-          orderList.add(order.data);
+          setState(() {
+            orderList.add(order.data);
+          });
         }
       }
     }
-    print(orderList);
   }
 
-  // TODO: need more UI design
+  // TODO: need more UI design, fix the problem that list only displays after refresh the page.
   @override
   Widget build(BuildContext context) {
     var length = 0;
@@ -59,7 +60,7 @@ class _HistoryScreenState extends State<HistoryScreen>{
     }else{
       length = orderList.length;
     }
-    print(length);
+    print("length = {$length}");
 
     return Scaffold(
       appBar: AppBar(
@@ -77,16 +78,24 @@ class _HistoryScreenState extends State<HistoryScreen>{
                 child: Column(
                   children: <Widget>[
                     ListTile(
-                      leading: Text("Route:"),
-                      title: Text("${orderList[index]['startAdd']} --> ${orderList[index]['destination']}"),
+                      leading: Text("Date: "),
+                      title: Text("${orderList[index]['date'].toDate()}"),
+                    ),
+                    ListTile(
+                      leading: Text("From:"),
+                      title: Text("${orderList[index]['startAdd']}"),
+                    ),
+                    ListTile(
+                      leading: Text("To:"),
+                      title: Text("${orderList[index]['destination']}"),
                     ),
                     ListTile(
                       leading: Text("Driver:"),
                       title: Text("${orderList[index]['driver_id']}"),
                     ),
                     ListTile(
-                      leading: Text("Date: "),
-                      title: Text("${orderList[index]['date'].toDate()}"),
+                      leading: Text("Price: "),
+                      title: Text("\$${orderList[index]['price']}"),
                     )
                   ]
                 )

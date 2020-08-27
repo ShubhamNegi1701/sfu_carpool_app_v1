@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:sfucarpoolapp/Controller/auth.dart';
 import 'package:sfucarpoolapp/Controller/validator.dart';
-import 'login.dart';
 
 class SignUp extends StatefulWidget {
 

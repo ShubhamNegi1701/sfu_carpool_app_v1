@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -37,6 +36,7 @@ class Map extends State<MainMapPage> {
   bool _startInitialized = false;
 
   final _firestore = Firestore.instance;
+  static int orderID = 0;
 
 //  FirebaseUser CurrentUser;
 //  String _fname = '';
@@ -230,10 +230,12 @@ class Map extends State<MainMapPage> {
                           String route = await getRoute(_start, _destination);
                           drawRoute(route);
                         }
+                        incrementOrderID();
                         _firestore.collection('history').add({
                           'uid': user.uid,
-                          'order_id': 002,
-                          'driver_id': 056,
+                          'order_id': orderID,
+                          'driver_id': 056, // hardcoded
+                          'price': 23.49, // hardcoded
                           'destination': _destinationId,
                           'startAdd': startController.text,
                           'date': DateTime.now()
@@ -248,6 +250,31 @@ class Map extends State<MainMapPage> {
         ),
       ),
     );
+  }
+
+  Future<void> incrementOrderID() async{
+    // Create a reference to the document the transaction will use
+    DocumentReference documentReference = _firestore.collection('users').document('orderHistory');
+
+    return _firestore.runTransaction((transaction) async {
+      // Get the document
+      DocumentSnapshot snapshot = await transaction.get(documentReference);
+
+      if (!snapshot.exists) {
+        throw Exception("User does not exist!");
+      }
+
+      // Update the follower count based on the current count
+      int newOrderID = snapshot.data['order_id'] + 1;
+
+      // Perform an update on the document
+      transaction.update(documentReference, {'order_id': newOrderID});
+      orderID = newOrderID;
+      // Return the new count
+      return newOrderID;
+    })
+        .then((value) => print("Follower count updated to $value"))
+        .catchError((error) => print("Failed to update user followers: $error"));
   }
 
   void replaceMarkers () async {

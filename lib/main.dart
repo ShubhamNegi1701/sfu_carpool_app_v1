@@ -4,6 +4,7 @@ import 'package:sfucarpoolapp/Controller/auth.dart';
 import 'package:sfucarpoolapp/View/home.dart';
 import 'package:sfucarpoolapp/Model/user.dart';
 import 'package:sfucarpoolapp/Controller/wrapper.dart';
+import 'View/forgetPwd.dart';
 import 'View/login.dart';
 import 'View/signup.dart';
 
@@ -18,6 +19,9 @@ class CarPoolApp extends StatelessWidget {
         title: 'SFU CarPool App',
         home: Wrapper(),
         theme: ThemeData(primaryColor: Colors.red, accentColor: Colors.red[900]),
+//        routes: {
+//          '/forget-password': (context) => ForgetPwd(),
+//        },
       ),
     );
   }

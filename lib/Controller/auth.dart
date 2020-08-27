@@ -27,6 +27,16 @@ class AuthService {
     }
   }
 
+  Future sendPwdResetEmail(String userEmail) async{
+    try{
+      await _auth.sendPasswordResetEmail(email: userEmail);
+      return true;
+    } catch(e){
+      print(e.toString());
+      return null;
+    }
+  }
+
   //sign in with email and password
   Future logInWithEmailAndPassword( String email, String password) async {
     try{
