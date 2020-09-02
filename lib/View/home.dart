@@ -38,31 +38,15 @@ class Map extends State<MainMapPage> {
   final _firestore = Firestore.instance;
   static int orderID = 0;
 
-//  FirebaseUser CurrentUser;
-//  String _fname = '';
-//  FirebaseAuth _auth;
-//  DocumentReference ref;
-//  @override
-//  void initState(){
-//    super.initState
-//    _auth = FirebaseAuth.instance;
-//    _getCurrentUser();
-//  }
-//  _getCurrentUser () async {
-//    CurrentUser = await _auth.currentUser();
-//    DocumentSnapshot item = await Firestore.instance.collection("users").document(CurrentUser.uid).get(); //If //I delete this line everything works fine but I don't have user name.
-//    _fname = item['firstName'];
-//    setState(() {
-//    });
-//  }
-
   final FirebaseAuth _authDB = FirebaseAuth.instance;
   FirebaseUser user;
+  String username = "";
 
   @override
   void initState() {
     super.initState();
     initUser();
+    getName();
   }
 
   initUser() async {
@@ -70,7 +54,19 @@ class Map extends State<MainMapPage> {
     setState(() {});
   }
 
+  void getName() async{
+    final names = await Firestore.instance.collection("users").getDocuments();
+    for (var name in names.documents){
+      if(name.data['uid'] == user.uid){
+        setState(() {
+          username = name.data['displayName'];
+        });
+      }
+    }
+  }
+
   Widget build(BuildContext context) {
+    getName();
     return MaterialApp(
       home: new Scaffold(
         appBar: AppBar(
@@ -100,7 +96,7 @@ class Map extends State<MainMapPage> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: <Widget>[
-                    Text("Welcome, ${user?.email}",
+                    Text("Welcome, $username!",
                       textAlign: TextAlign.center,
                       style: TextStyle(
                           color: Colors.white,

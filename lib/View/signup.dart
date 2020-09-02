@@ -195,7 +195,7 @@ class SignUpPage extends State<SignUp> {
                     onPressed: () async{
                       print(email);
                       print(password);
-                      dynamic result = await _auth.registerWithEmailAndPassword(email, password);
+                      dynamic result = await _auth.registerWithEmailAndPassword(email, password, firstName);
                       if(result == null){
                           setState(() {
                             error = 'please supply valid input';

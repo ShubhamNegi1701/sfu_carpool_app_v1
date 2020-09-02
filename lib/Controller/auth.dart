@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:sfucarpoolapp/Model/user.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -57,10 +58,17 @@ class AuthService {
   }
 
   //register with email and password
-  Future registerWithEmailAndPassword( String email, String password) async {
+  Future registerWithEmailAndPassword( String email, String password, String username) async {
     try{
       AuthResult result = await _auth.createUserWithEmailAndPassword(email: email.trim(), password: password.trim());
       FirebaseUser user = result.user;
+      Firestore.instance.collection('users').document().setData({ 'uid': user.uid, 'displayName': username.trim() });
+
+//      var userUpdateInfo = UserUpdateInfo();
+//      userUpdateInfo.displayName = username;
+//      await user.updateProfile(userUpdateInfo);
+//      await user.reload();
+
       if (user != null) await user.sendEmailVerification().then((value) => null);
       return _userFromFirebaseUser(user);
     } catch(e){
