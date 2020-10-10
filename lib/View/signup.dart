@@ -184,6 +184,7 @@ class SignUpPage extends State<SignUp> {
                     value: _checked,
                     onChanged: (bool value) {
                       setState(() {
+                        value = true;
                         _checked = value;
                       });
                     },
