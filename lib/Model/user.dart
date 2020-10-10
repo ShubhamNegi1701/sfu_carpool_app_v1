@@ -4,17 +4,16 @@ class User {
   final String email;
   final String password;
   final int reputation;
-  final int driver_passenger; // driver : 0, passenger: 1
+  final bool driver; // driver : true, passenger: false
 
   User(
       {this.uid,
-        this.firstname,
-        this.email,
-        this.password,
-        this.reputation,
-        this.driver_passenger});
+      this.firstname,
+      this.email,
+      this.password,
+      this.reputation,
+      this.driver});
 }
-
 
 //
 //  Users(

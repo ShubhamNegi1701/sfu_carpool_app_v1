@@ -5,7 +5,6 @@ import 'package:sfucarpoolapp/Controller/auth.dart';
 import 'package:sfucarpoolapp/Controller/validator.dart';
 
 class SignUp extends StatefulWidget {
-
   final Function toggleView;
   SignUp({this.toggleView}); //constructor call
 
@@ -14,13 +13,13 @@ class SignUp extends StatefulWidget {
 }
 
 class SignUpPage extends State<SignUp> {
-
   final AuthService _auth = AuthService();
   String email = '';
   String firstName = '';
   String password = '';
   String confirmPassword = '';
   String error = '';
+  bool _checked = false;
 
   @override
   Widget build(BuildContext context) {
@@ -34,8 +33,7 @@ class SignUpPage extends State<SignUp> {
               label: Text('Log In'),
               onPressed: () {
                 widget.toggleView();
-              }
-          )
+              })
         ],
       ),
       backgroundColor: Theme.of(context).primaryColor,
@@ -71,10 +69,10 @@ class SignUpPage extends State<SignUp> {
                         color: Colors.white,
                       )),
                   TextFormField(
-                   // controller: emailText,
+                    // controller: emailText,
                     validator: Validator.validateEmail,
                     keyboardType: TextInputType.emailAddress,
-                    onChanged: (val){
+                    onChanged: (val) {
                       setState(() {
                         email = val;
                       });
@@ -100,7 +98,7 @@ class SignUpPage extends State<SignUp> {
                   ),
                   TextFormField(
                     validator: Validator.validateName,
-                    onChanged: (val){
+                    onChanged: (val) {
                       setState(() {
                         firstName = val;
                       });
@@ -126,8 +124,8 @@ class SignUpPage extends State<SignUp> {
                   ),
                   TextFormField(
                     validator: Validator.validatePassword,
-                   // controller: passwordText,
-                    onChanged: (val){
+                    // controller: passwordText,
+                    onChanged: (val) {
                       setState(() {
                         password = val;
                       });
@@ -153,8 +151,8 @@ class SignUpPage extends State<SignUp> {
                     height: 20,
                   ),
                   TextField(
-                //    controller: passwordConfirm,
-                    onChanged: (val){
+                    //    controller: passwordConfirm,
+                    onChanged: (val) {
                       setState(() {
                         confirmPassword = val;
                       });
@@ -179,6 +177,20 @@ class SignUpPage extends State<SignUp> {
                   SizedBox(
                     height: 20,
                   ),
+                  CheckboxListTile(
+                    title: Text("Register as Driver?"),
+                    secondary: Icon(Icons.drive_eta),
+                    controlAffinity: ListTileControlAffinity.trailing,
+                    value: _checked,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _checked = value;
+                      });
+                    },
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
                   FlatButton(
                     child: Text(
                       'Sign Up',
@@ -192,17 +204,18 @@ class SignUpPage extends State<SignUp> {
                     ),
                     padding: const EdgeInsets.all(15),
                     textColor: Colors.white,
-                    onPressed: () async{
+                    onPressed: () async {
                       print(email);
                       print(password);
-                      dynamic result = await _auth.registerWithEmailAndPassword(email, password, firstName);
-                      if(result == null){
-                          setState(() {
-                            error = 'please supply valid input';
-                          });
-                      }
-                      else{ // alert dialogue
-                          return showDialog<void>(
+                      dynamic result = await _auth.registerWithEmailAndPassword(
+                          email, password, firstName, _checked);
+                      if (result == null) {
+                        setState(() {
+                          error = 'please supply valid input';
+                        });
+                      } else {
+                        // alert dialogue
+                        return showDialog<void>(
                             context: context,
                             barrierDismissible: false,
                             builder: (BuildContext context) {
@@ -223,14 +236,11 @@ class SignUpPage extends State<SignUp> {
                                         Navigator.of(context).pop();
                                       },
                                     )
-                                  ]
-                              );
-                            }
-                        );
+                                  ]);
+                            });
                       }
                     },
                   ),
-
                   SizedBox(height: 8),
                   Text(
                     error,
